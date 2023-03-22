@@ -26,4 +26,12 @@ Route::get('add-test', function () {
     }
 });
 
+Route::get('find', function () {
+    if (isset($_REQUEST['user']))
+    {
+        $user = \App\Models\Member::query()->where('rfid', ($_REQUEST['user']))->first();
+        return $user;
+    }
+});
+
 
