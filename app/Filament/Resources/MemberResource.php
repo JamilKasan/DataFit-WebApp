@@ -29,6 +29,7 @@ class MemberResource extends Resource
                 Forms\Components\TextInput::make('email')->label(__('Email'))->email(),
                 Forms\Components\TextInput::make('rfid')->label(__('RFID')),
                 Forms\Components\TextInput::make('password')->label(__('Password'))->password(),
+                Forms\Components\Checkbox::make('active')->label('Active')
             ]);
     }
 
