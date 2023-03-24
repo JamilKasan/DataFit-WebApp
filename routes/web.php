@@ -14,7 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if (session()->has('user'))
+    {
+        $sessions = \App\Models\Session::query()->where('user', session()->get('user'))->get();
+        return view('data.view', compact('sessions'));
+    }
+    else
+    {
+        return redirect('login');
+    }
 });
 
 Route::get('add-test', function () {
@@ -33,5 +41,52 @@ Route::get('find', function () {
         return $user;
     }
 });
+
+
+Route::get('set', function () {
+    if (isset($_REQUEST['user']))
+    {
+        $session = new \App\Models\Session();
+        $session->user = $_REQUEST['user'];
+        $session->time = $_REQUEST['time'];
+        $session->distance = $_REQUEST['distance'];
+        $session->save();
+    }
+});
+
+Route::get('login', function () {
+    return view('data.login');
+});
+
+Route::post('authenticate', function ()
+{
+    $username = $_REQUEST['username'];
+    $password = $_REQUEST['password'];
+    if (\App\Models\Member::query()->where('username', $username)->exists())
+    {
+        $user = \App\Models\Member::query()->where('username', $username)->first();
+        if ($password == $user->password)
+        {
+            session()->put('user', $user->id);
+            return redirect('/');
+        }
+        session()->flash('error', "Invalid credentials");
+        return back();
+    }
+    else
+    {
+        session()->flash('error', "Invalid credentials");
+        return back();
+    }
+})->name('authenticate');
+
+Route::get('logout', function ()
+{
+    if (session()->has('user'))
+    {
+        session()->remove('user');
+    }
+    return redirect('login');
+})->name('logout');
 
 
