@@ -31,8 +31,7 @@ class SessionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('date'),
-                Tables\Columns\TextColumn::make('duration'),
+                Tables\Columns\TextColumn::make('time'),
                 Tables\Columns\TextColumn::make('distance'),
             ])
             ->filters([

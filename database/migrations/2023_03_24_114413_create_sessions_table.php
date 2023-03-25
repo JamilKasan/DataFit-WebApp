@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->integer('user');
+            $table->integer('uid');
             $table->text('time')->nullable();
             $table->text('distance')->nullable();
         });
